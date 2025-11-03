@@ -52,3 +52,32 @@ def test_max_horizontal_aggregation_dataframe(df, expected_list) -> None:
     
     result = agg.max_horizontal_dataframe(df)
     assert result.to_series().to_list() == expected_list
+
+
+@pytest.mark.parametrize("df,expected_dict_list",[
+    (pl.DataFrame({"col1": [1, 2, 3]}), [{"col1": 2.0}]),
+    (pl.DataFrame({"col1": [3, None, 1, 2]}), [{"col1": 2.0}]),
+    (pl.DataFrame({"col1": [0, None, None, None], "col2": [4, 5, None, None]}), [{'col1': 0.0, 'col2': 4.5}])
+]) 
+def test_mean_aggregation_dataframe(df, expected_dict_list) -> None:
+    
+    # Return the mean value in each column
+    # Source: https://docs.pola.rs/api/python/stable/reference/dataframe/api/polars.DataFrame.mean.html#polars.DataFrame.mean
+    
+    result = agg.mean_dataframe(df)
+    assert result.to_dicts() == expected_dict_list
+
+@pytest.mark.parametrize("df,expected_list",[
+    (pl.DataFrame({"col1": [1, 2, 3]}), [1, 2, 3]),
+    (pl.DataFrame({"col1": [3, None, 1, 2]}), [3, None, 1, 2]),
+    (pl.DataFrame({"col1": [0, None, None, None], "col2": [4, 5, None, None]}), [2.0, 5.0, None, None])
+]) 
+def test_mean_horizontal_aggregation_dataframe(df, expected_list) -> None:
+    
+    # Return the mean value across each row
+    # Source: https://docs.pola.rs/api/python/stable/reference/dataframe/api/polars.DataFrame.mean_horizontal.html#polars.DataFrame.mean_horizontal
+    
+    result: pl.Series = agg.mean_horizontal_dataframe(df)
+    assert result.to_list() == expected_list
+    
+# And so on for other aggregation functions...
