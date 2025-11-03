@@ -15,6 +15,7 @@ python = ">=3.13"
 pip = "*"
 setuptools = "*"
 wheel = "*"
+polars = ">=1.35.1,<2"
 
 # ===========================
 # Feature: dev
